@@ -18,35 +18,34 @@ def authen(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
     return False
 
 @app.get("/get_user/{user_name}")
-async def get_user(user_name:str, Authen = Depends(authen)):
+def get_user(user_name:str, Authen: Annotated[bool, Depends(authen)]):
     if not Authen:
         return {"Message": "Access Denied"}
     for user in manage.list_users:
         if user.user_name == user_name:
             return user
-
     return {"message" : f"Not Found {user_name}"}
 
-@app.delete("/del_user/{user_name}", status_code=status.HTTP_100_CONTINUE)
-async def del_user(user_name: str, Authen = Depends(authen)):
+@app.delete("/del_user/{user_name}")
+def del_user(user_name: str, Authen: Annotated[bool, Depends(authen)]):
     if not Authen:
         return {"Message": "Access Denied"}
     return manage.del_user(user_name)
 
 @app.get("/get_full_user/")
-async def get_full_user(Authen = Depends(authen)):
+def get_full_user(Authen: Annotated[bool, Depends(authen)]):
     if not Authen:
         return {"message": "Access Denied"}
     return manage.get_all_users()
 
 @app.post("/create_user/")
-async def create_user(user_info: UserInfo, Authen = Depends(authen)):
+def create_user(user_info: UserInfo, Authen: Annotated[bool, Depends(authen)]):
     if not Authen:
         return {"message": "Access Denied"}
     return manage.add_user(user_info)
 
 @app.put("/update_user/{user_name}")
-async def update_user(user_name: str, new_info: UpdateInfo, Authen = Depends(authen)):
+def update_user(user_name: str, new_info: UpdateInfo, Authen: Annotated[bool, Depends(authen)]):
     if not Authen:
         return {"message": "Access Denied"}
     return manage.update_user(user_name, new_info)
