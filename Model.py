@@ -6,6 +6,7 @@ class UserInfo(BaseModel):
     phone_number: str | None = None
     full_name: str
     age: int
+
 class SearchInfo(BaseModel):
     user_name: str | None = None
     full_name: str | None = None
@@ -37,6 +38,7 @@ class Manage:
     def __init__(self):
         self.list_users = list()
         self.existed = dict()
+
     def add_user(self, user_info: UserInfo):
         if self.existed.get(user_info.user_name):
             return {"message": f"username {user_info.user_name} is existed"}
@@ -44,6 +46,7 @@ class Manage:
         self.list_users.append(new_user)
         self.existed[new_user.user_name] = True
         return {"message": f"added user {new_user.user_name}"}
+
     def del_user(self, user_name: str):
         for user in self.list_users:
             if user_name == user.user_name:
@@ -51,6 +54,7 @@ class Manage:
                 self.existed.pop(user_name)
                 return {"message": f"deleted user {user_name}"}
         return {"message": f"Not Found user {user_name}"}
+
     def update_user(self, user_name, new_info: UpdateInfo):
         for user in self.list_users:
             if user_name == user.user_name:
@@ -72,5 +76,6 @@ class Manage:
         for user in self.list_users:
             result.append(user)
         return result
+
     def search(self):
         pass
