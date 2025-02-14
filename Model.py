@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from fastapi.exceptions import HTTPException
 class UserInfo(BaseModel):
     user_name: str
     gender: bool
@@ -49,7 +49,8 @@ class Manage:
                 self.list_users.remove(user)
                 self.existed.pop(user_name)
                 return {"message": f"deleted user {user_name}"}
-        return {"message": f"Not Found user {user_name}"}
+        raise HTTPException(status_code=404, detail="Not Found")
+
 
     def update_user(self, user_name, new_info: UpdateInfo):
         for user in self.list_users:
