@@ -1,7 +1,7 @@
 
 from typing import Annotated
 from fastapi import FastAPI, Response,status
-from fastapi.params import Depends
+from fastapi.params import Depends, Query
 from fastapi.security import HTTPBasicCredentials, HTTPBasic
 from fastapi.exceptions import HTTPException
 from Model import Manage, UserInfo, UpdateInfo
