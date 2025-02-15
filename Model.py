@@ -51,7 +51,6 @@ class Manage:
                 return {"message": f"deleted user {user_name}"}
         raise HTTPException(status_code=404, detail="Not Found")
 
-
     def update_user(self, user_name, new_info: UpdateInfo):
         for user in self.list_users:
             if user_name == user.user_name:
