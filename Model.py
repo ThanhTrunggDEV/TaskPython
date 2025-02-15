@@ -37,7 +37,7 @@ class Manage:
 
     def add_user(self, user_info: UserInfo):
         if self.existed.get(user_info.user_name):
-            return {"message": f"username {user_info.user_name} is existed"}
+            raise HTTPException(status_code=204, detail=f"username {user_info.user_name} is existed")
         new_user = User(user_info.user_name, user_info.gender, user_info.phone_number, user_info.full_name, user_info.age)
         self.list_users.append(new_user)
         self.existed[new_user.user_name] = True
@@ -67,7 +67,7 @@ class Manage:
                 if new_info.new_age:
                     user.age = new_info.new_age
                 return {"message": "Updated"}
-        return {"message": f"Not Found user {user_name}"}
+        raise HTTPException(status_code=404, detail=f"Not found user name {user_name}")
 
     def get_all_users(self):
         result = list()
@@ -80,6 +80,8 @@ class Manage:
         for user in self.list_users:
             if user_name in user.user_name:
                 result.append(user)
+        if len(result) == 0:
+            raise HTTPException(status_code=404, detail="Not found")
         return result
 
     def search_by_name(self, name: str):
@@ -87,6 +89,8 @@ class Manage:
         for user in self.list_users:
             if name in user.full_name:
                 result.append(user)
+        if len(result) == 0:
+            raise HTTPException(status_code=404, detail="Not found")
         return result
 
     def search_by_gender_and_age(self, gender, age):
@@ -94,4 +98,6 @@ class Manage:
         for user in self.list_users:
             if user.age == age and user.gender == gender:
                 result.append(user)
+        if len(result) == 0:
+            raise HTTPException(status_code=404, detail="Not found")
         return result

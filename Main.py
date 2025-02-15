@@ -48,7 +48,7 @@ def get_full_user(isCorrect: Annotated[bool, Depends(authen)]):
         return {"message": "Access Denied"}
     return {"data": manage.get_all_users()}
 
-@app.post("/create_user/")
+@app.post("/create_user/", status_code=status.HTTP_201_CREATED)
 def create_user(user_info: UserInfo, isCorrect: Annotated[bool, Depends(authen)]):
     if not isCorrect:
         return {"message": "Access Denied"}
