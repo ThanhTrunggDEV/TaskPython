@@ -37,7 +37,7 @@ class Manage:
 
     def add_user(self, user_info: UserInfo):
         if self.existed.get(user_info.user_name):
-            raise HTTPException(status_code=204, detail=f"username {user_info.user_name} is existed")
+            raise HTTPException(status_code=200, detail=f"username {user_info.user_name} is existed")
         new_user = User(user_info.user_name, user_info.gender, user_info.phone_number, user_info.full_name, user_info.age)
         self.list_users.append(new_user)
         self.existed[new_user.user_name] = True
@@ -58,8 +58,6 @@ class Manage:
                     user.user_name = new_info.new_user_name
                     self.existed.pop(user_name)
                     self.existed[new_info.new_user_name] = True
-                if new_info.new_pass_word:
-                    user.pass_word = new_info.new_pass_word
                 if new_info.new_full_name:
                     user.full_name = new_info.new_full_name
                 if new_info.new_phone_number:
